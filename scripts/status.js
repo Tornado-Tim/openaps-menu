@@ -204,6 +204,3 @@ try {
 display.oled.setCursor(0,8);
 display.oled.writeString(font, 1, "COB: "+cob.mealCOB+"g  IOB: "+iob[0].iob+'U', 1, true);
 //dim the display if its night time
-if (checknighttime()){
-  display.oled.dimDisplay(true);
-}
