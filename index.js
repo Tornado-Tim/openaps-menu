@@ -17,7 +17,10 @@ var i2cBus = i2c.openSync(1);
 var displayConfig = require('./config/display.json');
 displayConfig.i2cBus = i2cBus;
 var display = require('./lib/display/ssd1306')(displayConfig);
-
+var night = checknighttime();
+if (night){
+  display.oled.dimDisplay(true);
+}
 // display the logo
 pngparse.parseFile('./static/unicorn.png', function(err, image) {
   if(err)
@@ -67,6 +70,9 @@ hidMenu
 .on('showvoltage', function () {
   voltage()
   .then(function (v) {
+    if (checknighttime()){
+      display.oled.dimDisplay(true);
+    }
     display.clear();
     display.write('Voltage: ' + v);
   })
@@ -97,4 +103,13 @@ function showMenu(menu) {
 
 //  console.log(text);
   display.write(text);
+}
+function checknighttime(){
+  date = new Date();
+  hour = date.getHours();
+
+  if (hour >= 7 && hour <= 19){
+    return true
+  }
+  return false;
 }

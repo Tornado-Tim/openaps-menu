@@ -9,6 +9,16 @@ var fs = require('fs');
 var font = require('oled-font-5x7');
 var i2cBus = i2c.openSync(1);
 
+//check if its night time
+function checknighttime(){
+  date = new Date();
+  hour = date.getHours();
+
+  if (hour >= 7 && hour <= 19){
+    return true
+  }
+  return false;
+}
 // Rounds value to 'digits' decimal places
 function round(value, digits)
 {
@@ -39,7 +49,10 @@ function stripLeadingZero(value)
 var displayConfig = require('/root/src/openaps-menu/config/display.json');
 displayConfig.i2cBus = i2cBus;
 var display = require('/root/src/openaps-menu/lib/display/ssd1306')(displayConfig);
-
+//dim the display if its night time
+if (checknighttime()){
+  display.oled.dimDisplay(true);
+}
 //Parse all the .json files we need
 try {
     var profile = JSON.parse(fs.readFileSync("/root/myopenaps/settings/profile.json"));
