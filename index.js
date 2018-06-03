@@ -17,7 +17,6 @@ var i2cBus = i2c.openSync(1);
 var displayConfig = require('./config/display.json');
 displayConfig.i2cBus = i2cBus;
 var display = require('./lib/display/ssd1306')(displayConfig);
-var night = checknighttime();
 function checknighttime(){
   date = new Date();
   hour = date.getHours();
@@ -27,6 +26,7 @@ function checknighttime(){
   }
   return false;
 }
+var night = checknighttime();
 if (night){
   display.oled.dimDisplay(true);
 }
